@@ -1,0 +1,40 @@
+name: Deploy WebSite
+on:
+  push:
+    branches:
+      - deploy-client
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - name: Check
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Create env file
+        run: |
+          touch ./apps/client/.env
+          echo REACT_APP_BOOKMARKS_GOOGLE_CLIENT_ID=${{ secrets.BOOKMARKS_GOOGLE_CLIENT_ID }} >> ./apps/client/.env
+          echo REACT_APP_BOOKMARKS_BASE_URL=${{ vars.BOOKMARKS_BASE_URL }} >> ./apps/client/.env
+          cat ./apps/client/.env
+
+      - name: Build
+        run: CI=false yarn build:client
+
+
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --delete --exclude '.git*/*'
+        env:
+          AWS_S3_BUCKET: ${{ vars.S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          SOURCE_DIR: 'apps/client/build'

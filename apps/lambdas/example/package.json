@@ -1,0 +1,12 @@
+{
+  "name": "example-lambda",
+  "type": "module",
+  "description": "This package will be treated as an ES module.",
+  "version": "1.0",
+  "main": "index.js",
+  "author": "yzhbankov",
+  "license": "MIT",
+  "dependencies": {
+    "uuid": "^11.0.5"
+  }
+}

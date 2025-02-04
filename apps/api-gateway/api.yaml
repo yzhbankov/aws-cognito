@@ -1,0 +1,46 @@
+openapi: 3.0.0
+paths:
+  "/api/v1/example":
+    get:
+      operationId: ExampleController_readExample
+      summary: Read example
+      parameters: []
+      responses:
+        '200':
+          description: Example description
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ExampleEntity"
+      tags:
+        - exampleTag
+      security:
+        - bearer: []
+      x-amazon-apigateway-integration:
+        uri: arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${example_lambda_arn}/invocations
+        httpMethod: POST
+        type: aws_proxy
+info:
+  title: Example We Server
+  description: The example API
+  version: '1.0'
+  contact: {}
+tags:
+  - name: exampleTag
+    description: ''
+servers: []
+components:
+  schemas:
+    ExampleEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d
+          description: Unique identifier
+        message:
+          type: string
+          example: Any text
+          description: Example field

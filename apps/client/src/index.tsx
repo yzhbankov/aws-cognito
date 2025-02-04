@@ -1,0 +1,37 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import {BrowserRouter} from 'react-router-dom';
+import {QueryClientProvider} from 'react-query';
+import {AuthProvider} from 'react-oidc-context';
+
+import {queryClient} from './queryClient';
+import {AppContainer} from './app/AppContainer';
+import reportWebVitals from './reportWebVitals';
+import './index.css';
+
+const cognitoAuthConfig = {
+    authority: "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_v9CP7to1V",
+    client_id: "1ria7tf7dfeestp40b7id2unq2",
+    redirect_uri: "http://localhost:8086",
+    response_type: "code",
+    scope: "phone openid email",
+    storage: localStorage,
+};
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+root.render(
+    <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+                <AuthProvider {...cognitoAuthConfig}>
+                    <AppContainer/>
+                </AuthProvider>
+            </BrowserRouter>
+        </QueryClientProvider>
+    </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
