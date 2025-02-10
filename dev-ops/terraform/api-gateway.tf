@@ -3,9 +3,9 @@ resource "aws_api_gateway_rest_api" "example-api" {
   description = "Example API Gateway"
   body = templatefile("${path.module}/../../apps/api-gateway/api.yaml",
     {
-      aws_region           = var.AWS_REGION
-      example_lambda_arn      = aws_lambda_function.example-lambda.arn
-      domain_url           = ""
+      aws_region         = var.AWS_REGION
+      example_lambda_arn = aws_lambda_function.example-lambda.arn
+      domain_url         = ""
     }
   )
 

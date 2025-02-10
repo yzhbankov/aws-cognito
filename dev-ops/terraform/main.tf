@@ -1,6 +1,6 @@
 locals {
-  example-lambda      = "${path.module}/../../apps/lambdas/example"
-  lambda_timeout   = 60
+  example-lambda = "${path.module}/../../apps/lambdas/example"
+  lambda_timeout = 60
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -59,7 +59,7 @@ resource "aws_lambda_function" "example-lambda" {
 
   environment {
     variables = {
-      ENVIRONMENT      = terraform.workspace
+      ENVIRONMENT          = terraform.workspace
       COGNITO_USER_POOL_ID = "us-east-1_v9CP7to1V",
     }
   }
