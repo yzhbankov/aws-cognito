@@ -3,5 +3,5 @@ interface IConfig {
 }
 
 export const config: IConfig = {
-    baseURL: process.env.REACT_APP_BOOKMARKS_BASE_URL || '',
+    baseURL: process.env.REACT_APP_BASE_URL || '',
 };

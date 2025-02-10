@@ -15,7 +15,6 @@ const cognitoAuthConfig = {
     redirect_uri: "http://localhost:8086",
     response_type: "code",
     scope: "phone openid email",
-    storage: localStorage,
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

@@ -60,7 +60,7 @@ resource "aws_lambda_function" "example-lambda" {
   environment {
     variables = {
       ENVIRONMENT      = terraform.workspace
-      BOOKMARKS_DOMAIN = var.WEB_SERVER_DOMAIN,
+      COGNITO_USER_POOL_ID = "us-east-1_v9CP7to1V",
     }
   }
 }
