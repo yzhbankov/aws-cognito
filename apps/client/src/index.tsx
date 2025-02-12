@@ -1,32 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {BrowserRouter} from 'react-router-dom';
-import {QueryClientProvider} from 'react-query';
 import {AuthProvider} from 'react-oidc-context';
-
-import {queryClient} from './queryClient';
+import {config} from './config';
 import {AppContainer} from './app/AppContainer';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
 const cognitoAuthConfig = {
-    authority: "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_v9CP7to1V",
-    client_id: "1ria7tf7dfeestp40b7id2unq2",
-    redirect_uri: "https://did7zqra4ypp2.cloudfront.net",
+    authority: `https://cognito-idp.${config.cognitoRegion}.amazonaws.com/${config.userPoolId}` || '',
+    client_id: config.cognitoClientId,
+    redirect_uri: config.baseURL,
     response_type: "code",
     scope: "phone openid email",
+    // authority: "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_v9CP7to1V",
+    // client_id: "1ria7tf7dfeestp40b7id2unq2",
+    // redirect_uri: "https://did7zqra4ypp2.cloudfront.net",
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <React.StrictMode>
-        <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
-                <AuthProvider {...cognitoAuthConfig}>
-                    <AppContainer/>
-                </AuthProvider>
-            </BrowserRouter>
-        </QueryClientProvider>
+        <BrowserRouter>
+            <AuthProvider {...cognitoAuthConfig}>
+                <AppContainer/>
+            </AuthProvider>
+        </BrowserRouter>
     </React.StrictMode>
 );
 

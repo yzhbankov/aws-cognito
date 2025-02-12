@@ -13,7 +13,6 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-
 resource "aws_iam_role" "iam_for_lambda" {
   name               = "${terraform.workspace}_iam_for_lambda_cognito_project"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
@@ -61,6 +60,7 @@ resource "aws_lambda_function" "example-lambda" {
     variables = {
       ENVIRONMENT          = terraform.workspace
       COGNITO_USER_POOL_ID = "us-east-1_v9CP7to1V",
+      COGNITO_REGION       = var.AWS_REGION
     }
   }
 }

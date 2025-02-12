@@ -22,6 +22,27 @@ paths:
         uri: arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${example_lambda_arn}/invocations
         httpMethod: POST
         type: aws_proxy
+    options:
+      summary: CORS Preflight
+      responses:
+        '204':
+          description: No Content
+          headers:
+            Access-Control-Allow-Headers:
+              description: Allowed headers for CORS
+              schema:
+                type: string
+                example: 'Content-Type, Authorization'
+            Access-Control-Allow-Methods:
+              description: Allowed methods for CORS
+              schema:
+                type: string
+                example: 'OPTIONS,GET'
+            Access-Control-Allow-Origin:
+              description: Allowed origins for CORS
+              schema:
+                type: string
+                example: '*'
 info:
   title: Example We Server
   description: The example API

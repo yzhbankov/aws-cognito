@@ -1,5 +1,6 @@
 import React from 'react';
 import {useAuth} from 'react-oidc-context';
+import {config} from '../config';
 
 export function Example() {
     const auth = useAuth();
@@ -9,7 +10,7 @@ export function Example() {
         (async () => {
             try {
                 const token = auth.user?.access_token;
-                const response = await fetch('https://3yb7wmqypk.execute-api.us-east-1.amazonaws.com/prod/api/v1/example', {
+                const response = await fetch(`${config.baseURL}/prod/api/v1/example`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

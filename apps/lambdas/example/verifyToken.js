@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import axios from "axios";
 import jwkToPem from "jwk-to-pem";
 
-const COGNITO_REGION = "us-east-1"; // Change to your region
+const COGNITO_REGION = process.env.COGNITO_REGION || "us-east-1"; // Change to your region
 const USER_POOL_ID = process.env.COGNITO_USER_POOL_ID || ""; // Change to your Cognito User Pool ID
 const COGNITO_ISSUER = `https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${USER_POOL_ID}`;
 
@@ -22,7 +22,7 @@ async function getPublicKeys() {
 export async function verifyToken(token) {
     try {
         const keys = await getPublicKeys();
-        const decodedHeader = jwt.decode(token, { complete: true });
+        const decodedHeader = jwt.decode(token, {complete: true});
 
         if (!decodedHeader || !keys[decodedHeader.header.kid]) {
             throw new Error("Invalid token");
