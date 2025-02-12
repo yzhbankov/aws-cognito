@@ -1,5 +1,6 @@
-const jwt = require("jsonwebtoken");
-const axios = require("axios");
+import jwt from "jsonwebtoken";
+import axios from "axios";
+import jwkToPem from "jwk-to-pem";
 
 const COGNITO_REGION = "us-east-1"; // Change to your region
 const USER_POOL_ID = process.env.COGNITO_USER_POOL_ID || ""; // Change to your Cognito User Pool ID
@@ -28,7 +29,7 @@ export async function verifyToken(token) {
         }
 
         const key = keys[decodedHeader.header.kid];
-        const publicKey = jwt.algorithms.RSAAlgorithm.fromJwk(key);
+        const publicKey = jwkToPem(key);
 
         return jwt.verify(token, publicKey, {
             issuer: COGNITO_ISSUER,

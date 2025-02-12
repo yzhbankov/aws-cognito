@@ -12,7 +12,7 @@ import './index.css';
 const cognitoAuthConfig = {
     authority: "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_v9CP7to1V",
     client_id: "1ria7tf7dfeestp40b7id2unq2",
-    redirect_uri: "http://localhost:8086",
+    redirect_uri: "https://did7zqra4ypp2.cloudfront.net",
     response_type: "code",
     scope: "phone openid email",
 };
