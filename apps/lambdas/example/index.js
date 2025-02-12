@@ -11,7 +11,7 @@ const defaultHeaders = {
 
 export const handler = async (event) => {
     try {
-        const token = event.headers.Authorization;
+        const token = (event.headers.Authorization || '').replace('Bearer ', '');
         if (!token) {
             return { statusCode: 401, body: JSON.stringify({ message: "Missing token" }) };
         }

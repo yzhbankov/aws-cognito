@@ -1,9 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useAuth} from 'react-oidc-context';
 import {Example} from './Example';
 
 export function App() {
     const auth = useAuth();
+
+    useEffect(() => {
+        // Clear the query parameters if the user is authenticated
+        if (auth.isAuthenticated) {
+            const url = new URL(window.location.href);
+            url.search = ''; // Clear the query parameters
+            window.history.replaceState({}, document.title, url.toString());
+        }
+    }, [auth.isAuthenticated]);
 
     switch (auth.activeNavigator) {
         case "signinSilent":
