@@ -1,23 +1,66 @@
 resource "aws_cognito_user_pool" "cognito_pool" {
   name = "cognito-user-pool"
+
+  # Sign-in preferences
+  username_attributes      = ["email", "phone_number"]
+  auto_verified_attributes = ["email", "phone_number"]
+
+  password_policy {
+    minimum_length    = 8
+    require_uppercase = true
+    require_lowercase = true
+    require_numbers   = true
+    require_symbols   = false
+  }
 }
 
 resource "aws_cognito_user_pool_client" "cognito_pool_client" {
-  name                                 = "cognito-client"
-  user_pool_id                         = aws_cognito_user_pool.cognito_pool.id
-  generate_secret                      = false
-  allowed_oauth_flows                  = ["code"]
-  allowed_oauth_scopes                 = ["email", "openid", "phone"]
-  allowed_oauth_flows_user_pool_client = true
+  name            = "cognito-client"
+  user_pool_id    = aws_cognito_user_pool.cognito_pool.id
+  generate_secret = false
 
-  # Replace with the actual CloudFront URL
+  # Enable OAuth flows
+  allowed_oauth_flows_user_pool_client = true
+  allowed_oauth_flows = [
+    "code",
+    "implicit"
+  ]
+  allowed_oauth_scopes = [
+    "email",
+    "openid",
+    "profile"
+  ]
+
+  # Authentication flows
+  explicit_auth_flows = [
+    "ALLOW_USER_PASSWORD_AUTH",
+    "ALLOW_REFRESH_TOKEN_AUTH",
+    "ALLOW_USER_SRP_AUTH"
+  ]
+
   callback_urls = [
     "https://${aws_cloudfront_distribution.cdn.domain_name}"
   ]
-
   logout_urls = [
     "https://${aws_cloudfront_distribution.cdn.domain_name}"
   ]
+
+  # **Advanced Authentication Settings**
+  token_validity_units {
+    access_token  = "hours"
+    id_token      = "hours"
+    refresh_token = "days"
+  }
+
+  access_token_validity  = 1  # 1 hour
+  id_token_validity      = 1  # 1 hour
+  refresh_token_validity = 30 # 30 days
+
+  # **Enable Token Revocation**
+  enable_token_revocation = true
+
+  # **Prevent User Existence Errors**
+  prevent_user_existence_errors = "ENABLED"
 }
 
 resource "null_resource" "cognito_dependency" {
