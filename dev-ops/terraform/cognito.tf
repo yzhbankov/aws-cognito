@@ -32,15 +32,12 @@ resource "aws_cognito_user_pool_client" "cognito_pool_client" {
 
   # Authentication flows
   explicit_auth_flows = [
-    "ALLOW_USER_PASSWORD_AUTH",
-    "ALLOW_REFRESH_TOKEN_AUTH",
-    "ALLOW_USER_SRP_AUTH"
+    "ALLOW_USER_AUTH",
+    "ALLOW_USER_SRP_AUTH",
+    "ALLOW_REFRESH_TOKEN_AUTH"
   ]
 
   callback_urls = [
-    "https://${aws_cloudfront_distribution.cdn.domain_name}"
-  ]
-  logout_urls = [
     "https://${aws_cloudfront_distribution.cdn.domain_name}"
   ]
 
