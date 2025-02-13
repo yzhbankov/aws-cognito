@@ -21,10 +21,10 @@ jobs:
       - name: Create env file
         run: |
           touch ./apps/client/.env
-          echo APP_BASE_URL=${{ vars.APP_BASE_URL }} >> ./apps/client/.env
-          echo COGNITO_REGION=${{ vars.AWS_REGION }} >> ./apps/client/.env
-          echo USER_POOL_ID=${{ vars.USER_POOL_ID }} >> ./apps/client/.env
-          echo COGNITO_CLIENT_ID=${{ vars.COGNITO_CLIENT_ID }} >> ./apps/client/.env
+          echo REACT_APP_BASE_URL=${{ vars.APP_BASE_URL }} >> ./apps/client/.env
+          echo REACT_APP_COGNITO_REGION=${{ vars.AWS_REGION }} >> ./apps/client/.env
+          echo REACT_APP_USER_POOL_ID=${{ vars.USER_POOL_ID }} >> ./apps/client/.env
+          echo REACT_APP_COGNITO_CLIENT_ID=${{ vars.COGNITO_CLIENT_ID }} >> ./apps/client/.env
           cat ./apps/client/.env
 
       - name: List files in ./apps/client

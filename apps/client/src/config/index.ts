@@ -6,8 +6,8 @@ interface IConfig {
 }
 
 export const config: IConfig = {
-    baseURL: process.env.APP_BASE_URL || '',
-    cognitoRegion: process.env.COGNITO_REGION || '',
-    userPoolId: process.env.USER_POOL_ID || '',
-    cognitoClientId: process.env.COGNITO_CLIENT_ID || '',
+    baseURL: process.env.REACT_APP_BASE_URL || '',
+    cognitoRegion: process.env.REACT_APP_COGNITO_REGION || '',
+    userPoolId: process.env.REACT_APP_USER_POOL_ID || '',
+    cognitoClientId: process.env.REACT_APP_COGNITO_CLIENT_ID || '',
 };
