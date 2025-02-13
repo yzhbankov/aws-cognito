@@ -44,7 +44,10 @@ data "archive_file" "example-lambda" {
   source_dir  = local.example-lambda
   output_path = "/tmp/example-lambda.zip"
 
-  depends_on = [null_resource.install_example_dependencies]
+  depends_on = [
+    null_resource.install_example_dependencies,
+    null_resource.cognito_dependency
+  ]
 }
 
 resource "aws_lambda_function" "example-lambda" {
@@ -59,7 +62,7 @@ resource "aws_lambda_function" "example-lambda" {
   environment {
     variables = {
       ENVIRONMENT          = terraform.workspace
-      COGNITO_USER_POOL_ID = "us-east-1_v9CP7to1V",
+      COGNITO_USER_POOL_ID = aws_cognito_user_pool.cognito_pool.id,
       COGNITO_REGION       = var.AWS_REGION
     }
   }
