@@ -27,6 +27,11 @@ jobs:
           echo COGNITO_CLIENT_ID=${{ vars.COGNITO_CLIENT_ID }} >> ./apps/client/.env
           cat ./apps/client/.env
 
+      - name: List files in ./apps/client
+        run: |
+          echo "Listing files in ./apps/client:"
+          ls -al ./apps/client
+
       - name: Build
         run: CI=false yarn build
         working-directory: ./apps/client
