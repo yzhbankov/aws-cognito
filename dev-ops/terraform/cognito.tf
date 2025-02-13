@@ -19,11 +19,10 @@ resource "aws_cognito_user_pool_client" "cognito_pool_client" {
   user_pool_id    = aws_cognito_user_pool.cognito_pool.id
   generate_secret = false
 
-  # Enable OAuth flows
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows = [
-    "code",
-    "implicit"
+    "implicit", # For SPA, implicit flow is commonly used
+    "code"      # Code flow can be used if authorization code is needed
   ]
   allowed_oauth_scopes = [
     "email",
