@@ -12,7 +12,7 @@ const cognitoAuthConfig = {
     client_id: config.cognitoClientId,
     redirect_uri: config.baseURL,
     response_type: "code",
-    scope: "phone openid email",
+    scope: "email openid phone",
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
