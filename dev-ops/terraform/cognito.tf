@@ -2,8 +2,8 @@ resource "aws_cognito_user_pool" "cognito_pool" {
   name = "cognito-user-pool"
 
   # Sign-in preferences
-  username_attributes      = ["email", "phone_number"]
-  auto_verified_attributes = ["email", "phone_number"]
+  username_attributes      = ["email"]
+  auto_verified_attributes = ["email"]
 
   password_policy {
     minimum_length    = 8
