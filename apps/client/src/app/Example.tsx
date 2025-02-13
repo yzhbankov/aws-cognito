@@ -10,7 +10,7 @@ export function Example() {
         (async () => {
             try {
                 const token = auth.user?.access_token;
-                const response = await fetch(`${config.baseURL}/prod/api/v1/example`, {
+                const response = await fetch(`${config.serverURL}/prod/api/v1/example`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
