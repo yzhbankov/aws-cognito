@@ -18,6 +18,8 @@ const cognitoAuthConfig = {
     // redirect_uri: "https://did7zqra4ypp2.cloudfront.net",
 };
 
+console.log('cognitoAuthConfig ', cognitoAuthConfig);
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <React.StrictMode>
