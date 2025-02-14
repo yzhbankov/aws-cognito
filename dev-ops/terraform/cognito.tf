@@ -22,7 +22,8 @@ resource "aws_cognito_user_pool_client" "cognito_pool_client" {
 
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows = [
-    "code" # Code flow can be used if authorization code is needed
+    "implicit", # For SPA, implicit flow is commonly used
+    "code"      # Code flow can be used if authorization code is needed
   ]
   allowed_oauth_scopes = [
     "email",
