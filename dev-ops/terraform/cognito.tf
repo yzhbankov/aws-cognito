@@ -61,7 +61,7 @@ resource "aws_cognito_user_pool_client" "cognito_pool_client" {
 
 # Add a custom domain for Cognito
 resource "aws_cognito_user_pool_domain" "custom_domain" {
-  domain      = "your-custom-domain"
+  domain       = "your-custom-domain"
   user_pool_id = aws_cognito_user_pool.cognito_pool.id
 }
 
