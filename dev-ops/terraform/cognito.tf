@@ -28,7 +28,7 @@ resource "aws_cognito_user_pool_client" "cognito_pool_client" {
   allowed_oauth_scopes = [
     "email",
     "openid",
-    "profile"
+    "phone"
   ]
 
   # Authentication flows
