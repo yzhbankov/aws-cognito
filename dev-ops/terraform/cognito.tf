@@ -59,10 +59,17 @@ resource "aws_cognito_user_pool_client" "cognito_pool_client" {
   prevent_user_existence_errors = "ENABLED"
 }
 
+# Add a custom domain for Cognito
+resource "aws_cognito_user_pool_domain" "custom_domain" {
+  domain      = "your-custom-domain"
+  user_pool_id = aws_cognito_user_pool.cognito_pool.id
+}
+
 resource "null_resource" "cognito_dependency" {
   depends_on = [
     aws_cognito_user_pool.cognito_pool,
-    aws_cognito_user_pool_client.cognito_pool_client
+    aws_cognito_user_pool_client.cognito_pool_client,
+    aws_cognito_user_pool_domain.custom_domain
   ]
 }
 
@@ -72,4 +79,8 @@ output "cognito_user_pool_id" {
 
 output "cognito_user_pool_client_id" {
   value = aws_cognito_user_pool_client.cognito_pool_client.id
+}
+
+output "cognito_user_pool_custom_domain" {
+  value = aws_cognito_user_pool_domain.custom_domain.domain
 }
