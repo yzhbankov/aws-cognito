@@ -15,9 +15,10 @@ resource "aws_cognito_user_pool" "cognito_pool" {
 }
 
 resource "aws_cognito_user_pool_client" "cognito_pool_client" {
-  name            = "cognito-client"
-  user_pool_id    = aws_cognito_user_pool.cognito_pool.id
-  generate_secret = false
+  name                         = "cognito-client"
+  user_pool_id                 = aws_cognito_user_pool.cognito_pool.id
+  generate_secret              = false
+  supported_identity_providers = ["COGNITO"]
 
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows = [
@@ -41,7 +42,7 @@ resource "aws_cognito_user_pool_client" "cognito_pool_client" {
     "https://${aws_cloudfront_distribution.cdn.domain_name}"
   ]
 
-  # **Advanced Authentication Settings**
+  # Advanced Authentication Settings
   token_validity_units {
     access_token  = "hours"
     id_token      = "hours"
@@ -52,24 +53,17 @@ resource "aws_cognito_user_pool_client" "cognito_pool_client" {
   id_token_validity      = 1  # 1 hour
   refresh_token_validity = 30 # 30 days
 
-  # **Enable Token Revocation**
+  # Enable Token Revocation
   enable_token_revocation = true
 
-  # **Prevent User Existence Errors**
+  # Prevent User Existence Errors
   prevent_user_existence_errors = "ENABLED"
-}
-
-# Add a custom domain for Cognito
-resource "aws_cognito_user_pool_domain" "custom_domain" {
-  domain       = "your-custom-domain"
-  user_pool_id = aws_cognito_user_pool.cognito_pool.id
 }
 
 resource "null_resource" "cognito_dependency" {
   depends_on = [
     aws_cognito_user_pool.cognito_pool,
-    aws_cognito_user_pool_client.cognito_pool_client,
-    aws_cognito_user_pool_domain.custom_domain
+    aws_cognito_user_pool_client.cognito_pool_client
   ]
 }
 
@@ -79,8 +73,4 @@ output "cognito_user_pool_id" {
 
 output "cognito_user_pool_client_id" {
   value = aws_cognito_user_pool_client.cognito_pool_client.id
-}
-
-output "cognito_user_pool_custom_domain" {
-  value = aws_cognito_user_pool_domain.custom_domain.domain
 }
