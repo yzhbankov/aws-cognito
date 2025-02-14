@@ -15,9 +15,10 @@ resource "aws_cognito_user_pool" "cognito_pool" {
 }
 
 resource "aws_cognito_user_pool_client" "cognito_pool_client" {
-  name            = "cognito-client"
-  user_pool_id    = aws_cognito_user_pool.cognito_pool.id
-  generate_secret = false
+  name                         = "cognito-client"
+  user_pool_id                 = aws_cognito_user_pool.cognito_pool.id
+  generate_secret              = false
+  supported_identity_providers = ["COGNITO"]
 
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows = [
@@ -32,15 +33,12 @@ resource "aws_cognito_user_pool_client" "cognito_pool_client" {
 
   # Authentication flows
   explicit_auth_flows = [
-    "ALLOW_USER_PASSWORD_AUTH",
-    "ALLOW_REFRESH_TOKEN_AUTH",
-    "ALLOW_USER_SRP_AUTH"
+    "ALLOW_USER_AUTH",
+    "ALLOW_USER_SRP_AUTH",
+    "ALLOW_REFRESH_TOKEN_AUTH"
   ]
 
   callback_urls = [
-    "https://${aws_cloudfront_distribution.cdn.domain_name}"
-  ]
-  logout_urls = [
     "https://${aws_cloudfront_distribution.cdn.domain_name}"
   ]
 
