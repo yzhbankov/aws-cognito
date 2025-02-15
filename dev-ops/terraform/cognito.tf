@@ -55,10 +55,17 @@ resource "aws_cognito_user_pool_client" "cognito_pool_client" {
   prevent_user_existence_errors = "ENABLED"
 }
 
+# Domain for Cognito User Pool
+resource "aws_cognito_user_pool_domain" "cognito_domain" {
+  domain       = "cognito-user-pool-domain-example" # Replace this with your preferred domain prefix
+  user_pool_id = aws_cognito_user_pool.cognito_pool.id
+}
+
 resource "null_resource" "cognito_dependency" {
   depends_on = [
     aws_cognito_user_pool.cognito_pool,
-    aws_cognito_user_pool_client.cognito_pool_client
+    aws_cognito_user_pool_client.cognito_pool_client,
+    aws_cognito_user_pool_domain.cognito_domain
   ]
 }
 
@@ -68,4 +75,8 @@ output "cognito_user_pool_id" {
 
 output "cognito_user_pool_client_id" {
   value = aws_cognito_user_pool_client.cognito_pool_client.id
+}
+
+output "cognito_user_pool_login_url" {
+  value = "https://${aws_cognito_user_pool_domain.cognito_domain.domain}.auth.${var.AWS_REGION}.amazoncognito.com/login?client_id=${aws_cognito_user_pool_client.cognito_pool_client.id}&response_type=code&scope=email%20openid%20phone&redirect_uri=https://${aws_cloudfront_distribution.cdn.domain_name}"
 }
