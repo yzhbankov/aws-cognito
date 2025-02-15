@@ -101,6 +101,7 @@ resource "null_resource" "set_default_user_password" {
   provisioner "local-exec" {
     command = <<EOT
       aws cognito-idp admin-set-user-password \
+        --region ${var.AWS_REGION} \
         --user-pool-id ${aws_cognito_user_pool.cognito_pool.id} \
         --username user@example.com \
         --password "P@ssw0rd123!" \
