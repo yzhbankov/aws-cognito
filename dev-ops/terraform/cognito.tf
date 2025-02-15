@@ -24,11 +24,7 @@ resource "aws_cognito_user_pool_client" "cognito_pool_client" {
   allowed_oauth_flows = [
     "code" # Code flow can be used if authorization code is needed
   ]
-  allowed_oauth_scopes = [
-    "email",
-    "openid",
-    "phone"
-  ]
+  allowed_oauth_scopes = ["email", "openid", "profile"]
 
   # Authentication flows
   explicit_auth_flows = [
@@ -48,9 +44,9 @@ resource "aws_cognito_user_pool_client" "cognito_pool_client" {
     refresh_token = "days"
   }
 
-  access_token_validity  = 1  # 1 hour
-  id_token_validity      = 1  # 1 hour
-  refresh_token_validity = 30 # 30 days
+  access_token_validity  = 1
+  id_token_validity      = 1
+  refresh_token_validity = 5
 
   # **Enable Token Revocation**
   enable_token_revocation = true
