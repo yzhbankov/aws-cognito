@@ -12,7 +12,6 @@ resource "aws_cognito_user_pool" "cognito_pool" {
     require_numbers   = true
     require_symbols   = false
   }
-  mfa_configuration = "OPTIONAL"
 }
 
 resource "aws_cognito_user_pool_client" "cognito_pool_client" {
