@@ -57,7 +57,7 @@ resource "aws_cognito_user_pool_client" "cognito_pool_client" {
 
 # Domain for Cognito User Pool
 resource "aws_cognito_user_pool_domain" "cognito_domain" {
-  domain       = "cognito-user-pool-domain-example" # Replace this with your preferred domain prefix
+  domain       = "user-pool-domain-yz"
   user_pool_id = aws_cognito_user_pool.cognito_pool.id
 }
 
