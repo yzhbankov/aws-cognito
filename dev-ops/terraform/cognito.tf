@@ -80,3 +80,35 @@ output "cognito_user_pool_client_id" {
 output "cognito_user_pool_login_url" {
   value = "https://${aws_cognito_user_pool_domain.cognito_domain.domain}.auth.${var.AWS_REGION}.amazoncognito.com/login?client_id=${aws_cognito_user_pool_client.cognito_pool_client.id}&response_type=code&scope=email%20openid%20phone&redirect_uri=https://${aws_cloudfront_distribution.cdn.domain_name}"
 }
+
+# Create a default user in the Cognito User Pool
+resource "aws_cognito_user" "default_user" {
+  user_pool_id = aws_cognito_user_pool.cognito_pool.id
+  username     = "user@example.com"
+  attributes = {
+    email = "user@example.com"
+  }
+
+  force_alias_creation = false
+  message_action       = "SUPPRESS" # Prevents sending a signup email
+
+  depends_on = [
+    aws_cognito_user_pool.cognito_pool
+  ]
+}
+
+resource "null_resource" "set_default_user_password" {
+  provisioner "local-exec" {
+    command = <<EOT
+      aws cognito-idp admin-set-user-password \
+        --user-pool-id ${aws_cognito_user_pool.cognito_pool.id} \
+        --username user@example.com \
+        --password "P@ssw0rd123!" \
+        --permanent
+    EOT
+  }
+
+  depends_on = [
+    aws_cognito_user.default_user
+  ]
+}
