@@ -1,0 +1,82 @@
+openapi: 3.0.0
+paths:
+  "/api/v1/example":
+    get:
+      operationId: ExampleController_readExample
+      summary: Read example
+      parameters: []
+      responses:
+        '200':
+          description: Example description
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ExampleEntity"
+      tags:
+        - exampleTag
+      security:
+        - bearer: []
+      x-amazon-apigateway-integration:
+        uri: arn:aws:apigateway:${aws_region}:lambda:path/2015-03-31/functions/${example_lambda_arn}/invocations
+        httpMethod: POST
+        type: aws_proxy
+    options:
+      summary: CORS Preflight
+      responses:
+        '204':
+          description: No Content
+          headers:
+            Access-Control-Allow-Headers:
+              description: Allowed headers for CORS
+              schema:
+                type: string
+                example: 'Content-Type, Authorization'
+            Access-Control-Allow-Methods:
+              description: Allowed methods for CORS
+              schema:
+                type: string
+                example: 'OPTIONS,GET'
+            Access-Control-Allow-Origin:
+              description: Allowed origins for CORS
+              schema:
+                type: string
+                example: '*'
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: |
+            {
+              "statusCode": 204
+            }
+        responses:
+          default:
+            statusCode: "204"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type, Authorization'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+
+info:
+  title: Example We Server
+  description: The example API
+  version: '1.0'
+  contact: {}
+tags:
+  - name: exampleTag
+    description: ''
+servers: []
+components:
+  schemas:
+    ExampleEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d
+          description: Unique identifier
+        message:
+          type: string
+          example: Any text
+          description: Example field

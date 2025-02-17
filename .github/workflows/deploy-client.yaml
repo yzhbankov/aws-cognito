@@ -1,0 +1,49 @@
+name: Deploy WebSite
+on:
+  push:
+    branches:
+      - deploy-client
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - name: Check
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: yarn install
+        working-directory: ./apps/client
+
+      - name: Create env file
+        run: |
+          touch ./apps/client/.env
+          echo REACT_APP_BASE_URL=${{ vars.APP_BASE_URL }} >> ./apps/client/.env
+          echo REACT_APP_SERVER_URL=${{ vars.SERVER_BASE_URL }} >> ./apps/client/.env
+          echo REACT_APP_COGNITO_REGION=${{ vars.AWS_REGION }} >> ./apps/client/.env
+          echo REACT_APP_USER_POOL_ID=${{ vars.USER_POOL_ID }} >> ./apps/client/.env
+          echo REACT_APP_COGNITO_CLIENT_ID=${{ vars.COGNITO_CLIENT_ID }} >> ./apps/client/.env
+          cat ./apps/client/.env
+
+      - name: List files in ./apps/client
+        run: |
+          echo "Listing files in ./apps/client:"
+          ls -al ./apps/client
+
+      - name: Build
+        run: CI=false yarn build
+        working-directory: ./apps/client
+
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --delete --exclude '.git*/*'
+        env:
+          AWS_S3_BUCKET: ${{ vars.S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          SOURCE_DIR: 'apps/client/build'
