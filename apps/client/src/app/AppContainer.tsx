@@ -17,7 +17,8 @@ export function AppContainer() {
 
     const signOutRedirect = () => {
         const cognitoDomain = "https://user-pool-domain-yz.auth.us-east-1.amazoncognito.com";
-        window.location.href = `${cognitoDomain}/logout?client_id=${config.cognitoClientId}}`;
+        const logoutUri = config.baseURL;
+        window.location.href = `${cognitoDomain}/logout?client_id=${config.cognitoClientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
     };
 
     if (auth.isLoading) {
